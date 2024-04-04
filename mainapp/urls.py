@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from mainapp import views
 from .views import SignUpView
 from django.urls import include
 
@@ -15,5 +15,7 @@ urlpatterns = [
     path('course/<int:pk>', views.CourseDetailView.as_view(), name='course-detail'),
     path('company/<int:pk>', views.CompanyDetailView.as_view(), name='company-detail'),    
     path('accounts/', include('django.contrib.auth.urls')),
-
+    path('employee/firstvisit/', views.firstVisitEmployee, name='employee-first-visit'),    
+    path('company/firstvisit/', views.firstVisitCompany, name='company-first-visit'),    
+    
 ]

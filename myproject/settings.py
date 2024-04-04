@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mainapp.middleware.FirstVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -144,7 +145,9 @@ SESSION_SAVE_EVERY_REQUEST = True
 AUTH_USER_MODEL = "mainapp.CustomUser"  # new
 
 LOGIN_REDIRECT_URL = '/'
-#LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 #REMOVE THIS
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+default_app_config = 'mainapp.apps.MainappConfig'

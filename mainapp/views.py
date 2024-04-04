@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from .forms import CustomUserCreationForm
 from .models import CustomUser,Company, Employee, Job_Post, Course
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from .forms import EmployeeInfoForm,CompanyInfoForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -11,22 +15,16 @@ class SignUpView(CreateView):
     template_name = "registration/signup.html"
 
 
-    
-#use this to restrict a view function  to regestred users
-#@login_required
-def index(request):
-    """View function for home page of site."""
 
-    # Generate counts of some of the main objects
+    
+def index(request):
+    
     num_jobs = Job_Post.objects.all().count()
     num_courses = Course.objects.all().count()
     num_users_employee = CustomUser.objects.filter(role__exact=2).count()
     num_users = CustomUser.objects.all().count()
-
-    # The 'all()' is implied by default.
     num_company = Company.objects.count()
 
-    #Session uses
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
 
@@ -40,11 +38,12 @@ def index(request):
         'num_visits': num_visits,
     }
 
-    # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
 
 class Job_PostListView(generic.ListView):
+
+    
     model = Job_Post
     context_object_name = 'Job_Post_list'   # your own name for the list as a template variable
     paginate_by = 10
@@ -71,7 +70,7 @@ class Job_PostDetailView(generic.DetailView):
 
 class EmployeeListView(generic.ListView):
     model = Employee
-    context_object_name = 'Employee_list'   # your own name for the list as a template variable
+    context_object_name = 'Employee_list'
     paginate_by = 10
 
 class EmployeeDetailView(generic.DetailView):
@@ -85,7 +84,7 @@ class EmployeeDetailView(generic.DetailView):
 
 class CourseListView(generic.ListView):
     model = Course
-    context_object_name = 'Course_list'   # your own name for the list as a template variable
+    context_object_name = 'Course_list'
     paginate_by = 10
 
 class CourseDetailView(generic.DetailView):
@@ -100,21 +99,35 @@ class CompanyDetailView(generic.DetailView):
 
 
 
+@login_required
+def firstVisitEmployee(request):
+    if request.method == 'POST':
+        form = EmployeeInfoForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            user.firstvisit = 0
+            user.save()
+            new_employee = Employee.objects.create(employee_id=user,**form.cleaned_data)
+            new_employee.save()
+            # Redirect to success page or dashboard after successful creation
+            return HttpResponseRedirect(reverse('index'))  
+    else:
+        form = EmployeeInfoForm()
+    return render(request, 'mainapp/create_employee.html', {'form': form})
 
 
-'''
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
-    """Generic class-based view listing books on loan to current user."""
-    model = BookInstance
-    template_name = 'catalog/bookinstance_list_borrowed_user.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return (
-            BookInstance.objects.filter(borrower=self.request.user)
-            .filter(status__exact='o')
-            .order_by('due_back')
-        )
-'''
+@login_required
+def firstVisitCompany(request):
+    if request.method == 'POST':
+        form = CompanyInfoForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            user.firstvisit = 0
+            user.save()
+            new_company = Company.objects.create(company_id=user,**form.cleaned_data)
+            new_company.save()
+            return HttpResponseRedirect(reverse('index'))  
+    else:
+        form = CompanyInfoForm()
+    return render(request, 'mainapp/create_company.html', {'form': form})

@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ Course.courseTitle }} </h1>
+
+  <p><strong>Description:</strong> {{ Course.description }}</p>
+  <p><strong>link:</strong> {{ Course.link }}</p>
+  <p><strong>Suggested By:</strong><a href="{{Course.company_id.get_absolute_url}}"> {{ Course.company_id }}</a></p>
+  
+{% endblock %}

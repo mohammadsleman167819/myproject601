@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     ('Company', 'Company'),
     )
     role = models.CharField(max_length=30, choices=ROLES)
+    firstvisit = models.IntegerField(default = 1)
     # Metadata
     class Meta:
         ordering = ['username']
@@ -27,6 +28,10 @@ class CustomUser(AbstractUser):
 
     def is_company(self):
         return self.role == 'Company'
+    
+    def is_firstvisit(self):
+        return self.firstvisit==1
+    
 
 class Employee(models.Model):
 
@@ -60,7 +65,7 @@ class Employee(models.Model):
     # Methods
     def get_absolute_url(self):
         """Returns the URL to access a particular instance of MyModelName."""
-        return reverse('employee-detail', args=[str(self.employee_id)])
+        return reverse('employee-detail', args=[str(self.employee_id_id)])
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""

@@ -1,7 +1,8 @@
-from django.db.models.signals import post_save
 from .models import Employee
 from .models import Job_Post
 from .models import Course
+from django.db.models.signals import post_save
+
 
 import re
 import nltk
@@ -41,16 +42,17 @@ def ML(text):
 
 
 def preprocess_text(sender, instance, created, **kwargs):
-    if created:  # Only process on new record creation
-        # Access relevant text field based on sender model
+    if created:  
+        
         text_field_name = {
             Employee: lambda instance: instance.education + instance.experience + instance.awards + instance.skills,
             Job_Post: lambda instance: instance.jobDescription,
             Course:   lambda instance:instance.description,
         }.get(sender)
-
+        
+        text_field_name = instance.education + instance.experience + instance.awards + instance.skills
         if text_field_name:
-            text = text_field_name(instance)
+            text = text_field_name
             clusterable_text = preprocess(text)
             instance.clusterable_text = clusterable_text
 
@@ -62,13 +64,13 @@ def preprocess_text(sender, instance, created, **kwargs):
 
             instance.save()
         else:
-            # Handle unexpected sender model (optional)
             print(f"Unexpected sender model: {sender}")
-
-
-post_save.connect(preprocess_text, sender=Employee)
-post_save.connect(preprocess_text, sender=Job_Post)
-post_save.connect(preprocess_text, sender=Course)
-
+'''
+def preprocess_text(sender, instance,  **kwargs):
+    text = instance.education + instance.experience + instance.awards + instance.skills
+    clusterable_text = preprocess(text)
+    instance.clusterable_text = clusterable_text
+    instance.save()
+'''
 
 

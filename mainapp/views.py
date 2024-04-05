@@ -11,7 +11,7 @@ from django.urls import reverse
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy('login')
     template_name = "registration/signup.html"
 
 
@@ -40,7 +40,6 @@ def index(request):
 
     return render(request, 'index.html', context=context)
 
-
 class Job_PostListView(generic.ListView):
 
     
@@ -66,7 +65,6 @@ class Job_PostListView(generic.ListView):
 class Job_PostDetailView(generic.DetailView):
     model = Job_Post
     context_object_name = 'Job_Post'
-
 
 class EmployeeListView(generic.ListView):
     model = Employee

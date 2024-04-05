@@ -65,12 +65,6 @@ def preprocess_text(sender, instance, created, **kwargs):
             instance.save()
         else:
             print(f"Unexpected sender model: {sender}")
-'''
-def preprocess_text(sender, instance,  **kwargs):
-    text = instance.education + instance.experience + instance.awards + instance.skills
-    clusterable_text = preprocess(text)
-    instance.clusterable_text = clusterable_text
-    instance.save()
-'''
+
 
 

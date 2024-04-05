@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 
+
 class FirstVisitMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -16,6 +17,9 @@ class FirstVisitMiddleware:
             elif request.user.is_company():
                 if request.path != reverse('company-first-visit'):
                     return redirect(reverse("company-first-visit"))
+        if request.user.is_authenticated and not request.user.is_firstvisit() and( (request.path == reverse('employee-first-visit')) or (request.path == reverse('company-first-visit'))):
+                    return redirect(reverse("index"))
+   
 
         response = self.get_response(request)
         return response

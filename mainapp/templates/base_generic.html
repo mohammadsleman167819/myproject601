@@ -19,17 +19,19 @@
       <div class="row">
         <div class="col-sm-2">
           {% block sidebar %}
-            <ul class="sidebar-nav">
+             {% if user.is_authenticated %}
+             <ul class="sidebar-nav">
               <li><a href="{% url 'index' %}">Home</a></li>
               <li><a href="{% url 'posts' %}">All Posts</a></li>
-              <li><a href="{% url 'employees' %}">All employees</a></li>
+              {% if user.is_company %}   
+                <li><a href="{% url 'list-employees' %}">All employees</a></li> 
+              {% endif %}
               <li><a href="{% url 'courses' %}">All Courses</a></li>
             </ul>
 
 
             <ul class="sidebar-nav">
               …
-             {% if user.is_authenticated %}
                <li>User: {{ user.get_username }}</li>
                <li>
                  <form id="logout-form" method="post" action="{% url 'logout' %}">

@@ -5,6 +5,8 @@
 
   <p><strong>City:</strong> {{ Company.city }}</p>
   <p><strong>Phone:</strong> {{ Company.phone }}</p>
-  <p><strong>Email:</strong>{{ Company.email }}</p>
-  
- {% endblock %}
+  <p><strong>Email:</strong>{{ Company.company_id.email }}</p>
+  {% if Company.company_id_id == user.id%}
+         <p><a href="{% url 'company-update' Company.company_id_id%}">Update</a></p>
+  {% endif %}  
+{% endblock %}

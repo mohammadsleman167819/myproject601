@@ -2,6 +2,11 @@
 
 {% block content %}
   <h1>Job Posts List</h1>
+  {% if user.is_authenticated %}
+    {% if user.is_company %}
+      <li><a href="{% url 'job_post-create' %}">add post</a></li> 
+    {% endif %}
+  {% endif %}
   {% if Job_Post_list %}
     <ul>
       {% for post in Job_Post_list %}

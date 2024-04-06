@@ -13,5 +13,9 @@
   <p><strong>Skills:</strong> {{ Employee.skills }}</p>
   <p><strong>References:</strong> {{ Employee.references }}</p>
   <p><strong>Other:</strong> {{ Employee.other }}</p>
-  
+  {% if Employee.employee_id_id == user.id%}
+         <p><a href="{% url 'employee-update' Employee.employee_id_id%}">Update</a></p>
+  {% endif %}
+
  {% endblock %}
+ 

@@ -34,8 +34,6 @@ class EmployeeInfoForm(forms.Form):
     skills = forms.CharField(widget=forms.Textarea,label="Skills", max_length=1000)
     references = forms.CharField(widget=forms.Textarea,label="References", max_length=1000, required=False)  
     other = forms.CharField(widget=forms.Textarea,label="Other", max_length=1000, required=False)  
-
-
     def clean_phone(self):
         data = self.cleaned_data['phone']
 
@@ -78,3 +76,20 @@ class CompanyInfoForm(forms.Form):
         return data
 
     
+class Job_PostCreateForm(forms.Form):
+    
+    job_title = forms.CharField(label="Job Title",max_length=50) 
+    jobDescription = forms.CharField(widget=forms.Textarea,label="Job Description", max_length=1000)
+    workhours = forms.CharField(widget=forms.Textarea,label="Work Hours", max_length=1000)
+    contact = forms.CharField(label="Contact",max_length=50)
+    city = forms.CharField(label="City", max_length=50)
+    salary = forms.CharField(label="Salary", max_length=50)
+    
+
+class CourseCreateForm(forms.Form):
+    
+    courseTitle = forms.CharField(label="Course Title",max_length=50)
+    description  = forms.CharField(widget=forms.Textarea,label="Course Description", max_length=1000)
+    link = forms.CharField(label="Course Link", max_length=100)
+    
+

@@ -4,13 +4,17 @@
   <h1>Title: {{ Job_Post.job_title }}</h1>
 
   <p><strong>Company:</strong> <a href="{{Job_Post.company_id.get_absolute_url}}">{{ Job_Post.company_id }}</a></p>
-                              <!--<a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a>-->
   <p><strong>Description:</strong> {{ Job_Post.jobDescription }}</p>
   <p><strong>Work Hours:</strong> {{ Job_Post.workhours }}</p>
   <p><strong>Contact with Us on:</strong> {{ Job_Post.contact }}</p>
   <p><strong>City:</strong> {{ Job_Post.city }}</p>
   <p><strong>Salary:</strong> {{ Job_Post.salary }}</p>
   <p><strong>Added on:</strong> {{ Job_Post.added_date }}</p>
+  {% if Job_Post.company_id_id == user.id%}
+  <p><a href="{% url 'job_post-update' Job_Post.job_id%}">Update</a></p>
+  <p><a href="{% url 'job_post-delete' Job_Post.job_id%}">Delete</a> </p>
+  {% endif %}
+              
  <!--
   
 The first interesting thing we haven't seen before is the function book.bookinstance_set.all(). 

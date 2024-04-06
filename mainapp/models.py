@@ -5,7 +5,8 @@ from django.urls import reverse
 
 
 class CustomUser(AbstractUser):
-    
+
+    email = models.EmailField(unique=True)    
     ROLES = (
     ('Employee', 'Employee'),
     ('Company', 'Company'),
@@ -103,7 +104,7 @@ class Company(models.Model):
     # Methods
     def get_absolute_url(self):
         """Returns the URL to access a particular instance of MyModelName."""
-        return reverse('company-detail', args=[str(self.company_id)])
+        return reverse('company-detail', args=[str(self.company_id_id)])
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
@@ -119,7 +120,7 @@ class Job_Post(models.Model):
     job_title = models.CharField(max_length=50)
     company_id = models.ForeignKey(
         Company,
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,)
     jobDescription  = models.TextField("Job Description",max_length=1000)
     workhours = models.TextField("Work Hours",max_length=1000)
     contact = models.CharField("Contact",max_length=50,)
@@ -139,6 +140,7 @@ class Job_Post(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a particular instance of MyModelName."""
         return reverse('job_post-detail', args=[str(self.job_id)])
+
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""

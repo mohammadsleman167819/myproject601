@@ -17,8 +17,6 @@ class FirstVisitMiddleware:
             elif request.user.is_company():
                 if request.path != reverse('company-first-visit'):
                     return redirect(reverse("company-first-visit"))
-        if request.user.is_authenticated and not request.user.is_firstvisit() and( (request.path == reverse('employee-first-visit')) or (request.path == reverse('company-first-visit'))):
-                    return redirect(reverse("index"))
    
 
         response = self.get_response(request)
